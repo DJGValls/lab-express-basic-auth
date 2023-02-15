@@ -41,16 +41,18 @@ module.exports = (app) => {
   // Handles access to the favicon
   app.use(favicon(path.join(__dirname, "..", "public", "images", "favicon.ico")));
 
-  // app.use(session({
-  //   secret: process.env.SESSION_SECRET, 
-  //   resave: false,
-  //   saveUninitialized: false, 
-  //   cookie: { 
-  //     maxAge: 1000 * 60 * 60 * 24 * 2 
-  //   },
-  //   store: MongoStore.create({
-  //     mongoUrl: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/basic-auth",
-  //     ttl: 60 * 60 * 24 * 2
-  //   })
-  // }))
+  app.use(session({
+    secret: process.env.SESSION_SECRET, 
+    resave: false,
+    saveUninitialized: false, 
+    cookie: { // Esto es OPCIONAL
+     maxAge: 1000 * 60 *60 * 24 * 2 // acceso al usuario durante 2 días.
+      //El valor tienen que ser milisegundos
+    },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI || "mongodb://127.0.0.1/lab-express-basic-auth",
+      ttl: 60*60*24*2 // Ejemplo de 7 días. Si en 2 días el usuario no accede se borrara la cookie de la base de datos (IMPORTANTE PARA LIMPIAR LA BASE DE DATOS)
+      //Tiempo en segundos
+    })
+  }))
 };
